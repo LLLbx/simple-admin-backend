@@ -1,25 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginGuard } from 'src/login.guard';
 
 @Controller('user-service')
-export class UserController {
+export class UserController implements OnModuleInit {
   constructor(private readonly userService: UserService, @Inject('common') private readonly common: {cc: number, aa: number} ) {};
 
+  onModuleInit() {
+      console.log('onModuleInit-user');
+      
+  }
+  @UseGuards(LoginGuard)
   @Post('/create')
   create(@Body() createUserDto: CreateUserDto) {
-    console.log(this.common);
-    
     return this.userService.create(createUserDto);
   }
 
-  @Get()
+  @Get(':id')
   findAll() {
     return this.userService.findAll();
   }
 
-  @Get(':id') @Get(':name') @Post('/a')
+  @Get('id:id/name/:name')
   findOne(@Param('id') id: string, @Param('name') name: string) {
     return this.userService.findOne(+id, name);
   }
