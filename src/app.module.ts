@@ -12,6 +12,6 @@ import { LogMiddleware } from './log.middleware';
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     //1
-      //consumer.apply(LogMiddleware).forRoutes('user-service*')
+    //consumer.apply(LogMiddleware).forRoutes('user-service*')
   }
 }
